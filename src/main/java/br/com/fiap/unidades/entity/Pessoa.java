@@ -29,13 +29,16 @@ public class Pessoa {
     @Column(name = "ID_PESSOA")
     private Long id;
 
-
+    @Column(name = "NM_PESSOA")
     private String nome;
 
+    @Column(name = "SN_PESSOA")
     private String sobrenome;
 
+    @Column(name = "EM_PESSOA")
     private String email;
 
+    @Column(name = "DT_NASC_PESSOA")
     private LocalDate nascimento;
 
     @Enumerated(EnumType.STRING)
