@@ -1,11 +1,10 @@
-package br.com.fiap.unidades.dto.response;
+package br.com.fiap.unidades.dto.request;
 
 import br.com.fiap.unidades.entity.Tipo;
 
 import java.time.LocalDate;
 
-public record PessoaResponse(
-        Long id,
+public record PessoaRequest(
         String nome,
         String sobrenome,
         String email,

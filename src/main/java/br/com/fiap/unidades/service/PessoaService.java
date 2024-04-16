@@ -11,7 +11,54 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-//@Service
-//public class PessoaService implements ServiceDTO<Pessoa, PessoaRequest, PessoaResponse, AbstractDTO> {
-//
-//}
+@Service
+public class PessoaService implements ServiceDTO<Pessoa, PessoaRequest, PessoaResponse, AbstractDTO> {
+
+    @Autowired
+    PessoaRepository repo;
+
+    @Override
+    public Pessoa toEntity(PessoaRequest r) {
+        return Pessoa.builder()
+                .nome(r.nome())
+                .sobrenome(r.sobrenome())
+                .email(r.email())
+                .tipo(r.tipo())
+                .nascimento(r.nascimento())
+                .build();
+    }
+
+    @Override
+    public PessoaResponse toResponse(Pessoa e) {
+        if (Objects.isNull(e)) return null;
+        return new PessoaResponse(
+                e.getId(),
+                e.getNome(),
+                e.getSobrenome(),
+                e.getEmail(),
+                e.getTipo(),
+                e.getNascimento()
+        );
+    }
+
+    @Override
+    public Pessoa findDatabaseObject(AbstractDTO abstractDTO) {
+        return repo.findById(abstractDTO.id()).orElse(null);
+    }
+
+    @Override
+    public List<Pessoa> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public Pessoa findById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
+
+    @Override
+    public Pessoa save(PessoaRequest r) {
+        if (Objects.isNull(r)) return null;
+        return repo.save( toEntity(r) );
+    }
+}

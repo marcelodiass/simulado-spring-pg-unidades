@@ -1,8 +1,8 @@
 package br.com.fiap.unidades.dto.response;
 
 public record UsuarioResponse(
-        PessoaResponse pessoa,
+        Long id,
         String username,
-        Long id
+        PessoaResponse pessoa
 ) {
 }
