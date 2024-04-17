@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 @Table(name = "TB_USUARIO", uniqueConstraints = {
         @UniqueConstraint(name = "UK_PESSOA", columnNames = "ID_PESSOA")
 })

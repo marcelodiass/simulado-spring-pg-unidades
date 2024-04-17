@@ -13,9 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 @Table(name = "TB_CHEFE", uniqueConstraints = {
         @UniqueConstraint(name = "UK_USUARIO", columnNames = "ID_USUARIO"),
-        @UniqueConstraint(name = "UK_UNIDADE", columnNames = "ID_UNIDADE"),
+        @UniqueConstraint(name = "UK_UNIDADE_FIM", columnNames = {"UNIDADE", "DT_FIM_CHEFE"})
 })
 public class Chefe {
 
@@ -33,7 +34,7 @@ public class Chefe {
     @Column(name = "SUBS_CHEFE")
     private Boolean substituto;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(
             name = "USUARIO",
             referencedColumnName = "ID_USUARIO",
@@ -41,7 +42,7 @@ public class Chefe {
     )
     private Usuario usuario;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(
             name = "UNIDADE",
             referencedColumnName = "ID_UNIDADE",

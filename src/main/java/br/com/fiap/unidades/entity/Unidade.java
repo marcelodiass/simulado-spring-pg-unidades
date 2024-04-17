@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 @Table(name = "TB_UNIDADE", uniqueConstraints = {
         @UniqueConstraint(name = "UK_SIGLA_MACRO", columnNames = {"SIGLA_UNIDADE", "MACRO_UNIDADE"})
 })
@@ -36,10 +37,10 @@ public class Unidade {
     @Column(name = "DESC_UNIDADE")
     private String descricao;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(
-            name = "UNIDADE",
-            referencedColumnName = "MACRO_UNIDADE",
+            name = "MACRO",
+            referencedColumnName = "ID_UNIDADE",
             foreignKey = @ForeignKey(name = "FK_UNIDADE_MACRO")
     )
     private Unidade macro;

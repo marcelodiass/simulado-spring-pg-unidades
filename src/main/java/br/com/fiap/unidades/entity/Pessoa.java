@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 @Table(name = "TB_PESSOA", uniqueConstraints = {
         @UniqueConstraint(name = "UK_EMAIL", columnNames = "EMAIL_PESSOA")
 })
