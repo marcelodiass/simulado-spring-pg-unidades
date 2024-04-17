@@ -1,6 +1,5 @@
 package br.com.fiap.unidades.service;
 
-import br.com.fiap.unidades.dto.AbstractDTO;
 import org.springframework.data.domain.Example;
 
 import java.util.List;
@@ -11,7 +10,7 @@ import java.util.List;
  * @param <Response>
  */
 
-public interface ServiceDTO<Entity, Request, Response, abstractDTO> {
+public interface ServiceDTO<Entity, Request, Response> {
 
     Entity toEntity(Request r);
 

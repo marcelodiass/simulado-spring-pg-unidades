@@ -1,6 +1,5 @@
 package br.com.fiap.unidades.service;
 
-import br.com.fiap.unidades.dto.AbstractDTO;
 import br.com.fiap.unidades.dto.request.ChefeRequest;
 import br.com.fiap.unidades.dto.response.ChefeResponse;
 import br.com.fiap.unidades.entity.Chefe;
@@ -18,7 +17,7 @@ import java.util.Objects;
  */
 
 @Service
-public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeResponse, AbstractDTO> {
+public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeResponse> {
 
     @Autowired
     UsuarioService usuarioService;
@@ -32,8 +31,8 @@ public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeRespon
     @Override
     public Chefe toEntity(ChefeRequest r) {
 
-        var unidade = unidadeService.findDatabaseObject( r.unidade() );
-        var usuario = usuarioService.findDatabaseObject( r.usuario() );
+        var unidade = unidadeService.findDatabaseObject();
+        var usuario = usuarioService.findDatabaseObject();
 
         return Chefe.builder()
                 .unidade(unidade)

@@ -1,6 +1,5 @@
 package br.com.fiap.unidades.service;
 
-import br.com.fiap.unidades.dto.AbstractDTO;
 import br.com.fiap.unidades.dto.request.UnidadeRequest;
 import br.com.fiap.unidades.dto.response.UnidadeResponse;
 import br.com.fiap.unidades.entity.Unidade;
@@ -17,7 +16,7 @@ import java.util.Objects;
  */
 
 @Service
-public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, UnidadeResponse, AbstractDTO> {
+public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, UnidadeResponse> {
 
     @Autowired
     UnidadeRepository repo;
