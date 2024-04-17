@@ -5,13 +5,14 @@ import br.com.fiap.unidades.dto.response.UsuarioResponse;
 import br.com.fiap.unidades.entity.Usuario;
 import br.com.fiap.unidades.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
-public class UsuarioService implements ServiceDTO<Usuario, UsuarioRequest, UsuarioResponse, AbstractDTO> {
+public class UsuarioService implements ServiceDTO<Usuario, UsuarioRequest, UsuarioResponse> {
 
     @Autowired
     UsuarioRepository repo;
@@ -22,7 +23,7 @@ public class UsuarioService implements ServiceDTO<Usuario, UsuarioRequest, Usuar
     @Override
     public Usuario toEntity(UsuarioRequest r) {
 
-        var pessoa = pessoaService.findDatabaseObject( r.pessoa() );
+        var pessoa = new PessoaService().toEntity(r.pessoa());
 
         return Usuario.builder()
                 .username(r.username())
@@ -44,14 +45,15 @@ public class UsuarioService implements ServiceDTO<Usuario, UsuarioRequest, Usuar
         );
     }
 
-    @Override
-    public Usuario findDatabaseObject(AbstractDTO abstractDTO) {
-        return repo.findById(abstractDTO.id()).orElse(null);
-    }
 
     @Override
     public List<Usuario> findAll() {
         return repo.findAll();
+    }
+
+    @Override
+    public List<Usuario> findAll(Example<Usuario> example) {
+        return repo.findAll(example);
     }
 
     @Override

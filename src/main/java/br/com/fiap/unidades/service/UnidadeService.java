@@ -5,15 +5,12 @@ import br.com.fiap.unidades.dto.response.UnidadeResponse;
 import br.com.fiap.unidades.entity.Unidade;
 import br.com.fiap.unidades.repository.UnidadeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
-/*
-* TODO:
-*  - Corrigir macro em toEntity
- */
 
 @Service
 public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, UnidadeResponse> {
@@ -23,11 +20,25 @@ public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, Unida
 
     @Override
     public Unidade toEntity(UnidadeRequest r) {
+        if (Objects.isNull(r.macro())) {
+            return Unidade.builder()
+                    .nome(r.nome())
+                    .sigla(r.sigla())
+                    .descricao(r.descricao())
+                    .build();
+        }
+
+        var macroId = new UnidadeService().findById(r.macro().id());
+
+        if (Objects.isNull(macroId)) {
+            return null;
+        }
+
         return Unidade.builder()
                 .nome(r.nome())
                 .sigla(r.sigla())
                 .descricao(r.descricao())
-                .macro(r.macro())
+                .macro(macroId)
                 .build();
     }
 
@@ -37,23 +48,24 @@ public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, Unida
 
         var macro = toResponse(e.getMacro());
 
-        return new UnidadeResponse (
-                e.getId(),
-                e.getNome(),
-                e.getSigla(),
-                e.getDescricao(),
-                macro
-        );
+        return UnidadeResponse.builder()
+                .nome(e.getNome())
+                .sigla(e.getSigla())
+                .descricao(e.getDescricao())
+                .macro(macro)
+                .build();
+
     }
 
-    @Override
-    public Unidade findDatabaseObject(AbstractDTO abstractDTO) {
-        return repo.findById(abstractDTO.id()).orElse(null);
-    }
 
     @Override
     public List<Unidade> findAll() {
         return repo.findAll();
+    }
+
+    @Override
+    public List<Unidade> findAll(Example<Unidade> example) {
+        return repo.findAll( example );
     }
 
     @Override

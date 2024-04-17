@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record UnidadeRequest(
+        @Valid
+        AbstractRequest macro,
+
         @Size(min = 3, max = 100)
         String nome,
 
@@ -12,9 +15,7 @@ public record UnidadeRequest(
         String sigla,
 
         @Size(min = 3)
-        String descricao,
+        String descricao
 
-        @Valid
-        AbstractRequest macro
 ) {
 }

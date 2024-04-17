@@ -18,8 +18,6 @@ public interface ServiceDTO<Entity, Request, Response> {
 
     List<Entity> findAll();
 
-    Entity findDatabaseObject(AbstractDTO abstractDTO);
-
     List<Entity> findAll(Example<Entity> example);
 
     Entity findById(Long id);

@@ -11,19 +11,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 
-/*TODO:
- * - Corrigir usuario em toEntity
- * - Corrigir unidade em toEntity
- */
 
 @Service
 public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeResponse> {
-
-    @Autowired
-    UsuarioService usuarioService;
-
-    @Autowired
-    UnidadeService unidadeService;
 
     @Autowired
     ChefeRepository repo;
@@ -31,24 +21,26 @@ public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeRespon
     @Override
     public Chefe toEntity(ChefeRequest r) {
 
-        var unidade = unidadeService.findDatabaseObject();
-        var usuario = usuarioService.findDatabaseObject();
+        var unidadeId = new UnidadeService().findById(r.unidade().id());
+        var usuarioId = new UsuarioService().findById(r.usuario().id());
 
         return Chefe.builder()
-                .unidade(unidade)
+                .unidade(unidadeId)
                 .inicio(r.inicio())
                 .fim(r.fim())
-                .usuario(usuario)
+                .usuario(usuarioId)
                 .substituto(r.substituto())
                 .build();
     }
 
     @Override
     public ChefeResponse toResponse(Chefe e) {
-        if (Objects.isNull( e )) return null;
+        if (Objects.isNull( e )) {
+            return null;
+        }
 
-        var unidade = unidadeService.toResponse(e.getUnidade());
-        var usuario = usuarioService.toResponse(e.getUsuario());
+        var unidade = new UnidadeService().toResponse(e.getUnidade());
+        var usuario = new UsuarioService().toResponse(e.getUsuario());
 
         return new ChefeResponse(
                 e.getId(),
@@ -60,10 +52,6 @@ public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeRespon
         );
     }
 
-    @Override
-    public Chefe findDatabaseObject(AbstractDTO abstractDTO) {
-        return repo.findById(abstractDTO.id()).orElse(null);
-    }
 
     @Override
     public List<Chefe> findAll() {
