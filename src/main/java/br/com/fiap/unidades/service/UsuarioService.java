@@ -15,15 +15,15 @@ import java.util.Objects;
 public class UsuarioService implements ServiceDTO<Usuario, UsuarioRequest, UsuarioResponse> {
 
     @Autowired
-    UsuarioRepository repo;
+    private UsuarioRepository repo;
 
     @Autowired
-    PessoaService pessoaService;
+    private PessoaService pessoaService;
 
     @Override
     public Usuario toEntity(UsuarioRequest r) {
 
-        var pessoa = new PessoaService().toEntity(r.pessoa());
+        var pessoa = pessoaService.toEntity(r.pessoa());
 
         return Usuario.builder()
                 .username(r.username())

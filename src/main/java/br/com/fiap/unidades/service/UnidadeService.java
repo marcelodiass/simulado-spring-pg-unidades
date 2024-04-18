@@ -16,7 +16,7 @@ import java.util.Objects;
 public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, UnidadeResponse> {
 
     @Autowired
-    UnidadeRepository repo;
+    private UnidadeRepository repo;
 
     @Override
     public Unidade toEntity(UnidadeRequest r) {
@@ -28,9 +28,9 @@ public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, Unida
                     .build();
         }
 
-        var macroId = new UnidadeService().findById(r.macro().id());
+        var macro = repo.findById(r.macro().id()).orElse(null);
 
-        if (Objects.isNull(macroId)) {
+        if (Objects.isNull(macro)) {
             return null;
         }
 
@@ -38,7 +38,7 @@ public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, Unida
                 .nome(r.nome())
                 .sigla(r.sigla())
                 .descricao(r.descricao())
-                .macro(macroId)
+                .macro(macro)
                 .build();
     }
 

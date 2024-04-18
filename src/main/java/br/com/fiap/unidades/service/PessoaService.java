@@ -15,7 +15,7 @@ import java.util.Objects;
 public class PessoaService implements ServiceDTO<Pessoa, PessoaRequest, PessoaResponse> {
 
     @Autowired
-    PessoaRepository repo;
+    private PessoaRepository repo;
 
     @Override
     public Pessoa toEntity(PessoaRequest r) {

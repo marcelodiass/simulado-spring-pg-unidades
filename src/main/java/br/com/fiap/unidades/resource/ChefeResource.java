@@ -5,14 +5,14 @@ import br.com.fiap.unidades.dto.response.ChefeResponse;
 import br.com.fiap.unidades.entity.Chefe;
 import br.com.fiap.unidades.entity.Unidade;
 import br.com.fiap.unidades.service.ChefeService;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -54,13 +54,27 @@ public class ChefeResource implements ResourceDTO<ChefeRequest, ChefeResponse> {
         return ResponseEntity.ok( resposta );
     }
 
+    @GetMapping(value = "/{id}")
     @Override
-    public ResponseEntity<ChefeResponse> findById(Long id) {
-        return null;
+    public ResponseEntity<ChefeResponse> findById(@PathVariable Long id) {
+        var encontrado = service.findById(id);
+        var resposta = service.toResponse(encontrado);
+        return ResponseEntity.ok(resposta);
     }
 
+    @Transactional
+    @PostMapping
     @Override
-    public ResponseEntity<ChefeResponse> save(ChefeRequest r) {
-        return null;
+    public ResponseEntity<ChefeResponse> save(@RequestBody @Valid ChefeRequest r ) {
+        var saved = service.save( r );
+        var resposta = service.toResponse(saved);
+
+        var uri = ServletUriComponentsBuilder
+                .fromCurrentRequestUri()
+                .path("/{id}")
+                .buildAndExpand(saved.getId())
+                .toUri();
+
+        return ResponseEntity.created(uri).body(resposta);
     }
 }

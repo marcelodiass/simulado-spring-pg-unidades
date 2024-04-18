@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 
+@Entity
 @Table(name = "TB_PESSOA", uniqueConstraints = {
         @UniqueConstraint(name = "UK_EMAIL", columnNames = "EMAIL_PESSOA")
 })

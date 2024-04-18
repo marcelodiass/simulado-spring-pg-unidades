@@ -4,6 +4,8 @@ import br.com.fiap.unidades.dto.request.ChefeRequest;
 import br.com.fiap.unidades.dto.response.ChefeResponse;
 import br.com.fiap.unidades.entity.Chefe;
 import br.com.fiap.unidades.repository.ChefeRepository;
+import br.com.fiap.unidades.repository.UnidadeRepository;
+import br.com.fiap.unidades.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -16,19 +18,29 @@ import java.util.Objects;
 public class ChefeService implements ServiceDTO<Chefe, ChefeRequest, ChefeResponse> {
 
     @Autowired
-    ChefeRepository repo;
+    private ChefeRepository repo;
+
+    @Autowired
+    private UnidadeRepository repoUnidade;
+
+    @Autowired
+    private UsuarioRepository repoUsuario;
 
     @Override
     public Chefe toEntity(ChefeRequest r) {
 
-        var unidadeId = new UnidadeService().findById(r.unidade().id());
-        var usuarioId = new UsuarioService().findById(r.usuario().id());
+        var unidade = repoUnidade.findById(r.unidade().id()).orElse(null);
+        var usuario = repoUsuario.findById(r.usuario().id()).orElse(null);
+
+        if (Objects.isNull(unidade) || Objects.isNull(usuario)) {
+            return null;
+        }
 
         return Chefe.builder()
-                .unidade(unidadeId)
+                .unidade(unidade)
                 .inicio(r.inicio())
                 .fim(r.fim())
-                .usuario(usuarioId)
+                .usuario(usuario)
                 .substituto(r.substituto())
                 .build();
     }
